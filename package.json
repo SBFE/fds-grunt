@@ -1,6 +1,6 @@
 {
   "name": "fds-grunt",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Run grunt in fd-server",
   "main": "fds-grunt.node",
   "scripts": {

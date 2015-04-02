@@ -31,20 +31,23 @@ route(function(req,res){
 		buffer.push('query: ' + url.query);
 		query = $querystring.parse(url.query);
 
-		gruntPath = decodeURIComponent(query.grunt) || './';
-		task = decodeURIComponent(query.task);
+		gruntPath = query.grunt || '../../';
+		gruntPath = decodeURIComponent(gruntPath);
+		buffer.push('query.grunt: ' + gruntPath);
+
+		task = query.task || '';
+		task = decodeURIComponent(task);
+		buffer.push('query.task: ' + task);
+
 		timeout = parseInt(query.timeout, 10) || 10000;
+		buffer.push('query.timeout: ' + timeout);
 
-		gruntPath = $path.resolve(gruntPath, __dirname);
-
+		gruntPath = $path.resolve(__dirname, gruntPath);
 		if(!(/gruntfile\.js$/i).test(gruntPath)){
 			gruntPath = $path.join(gruntPath, 'gruntfile.js');
 		}
+		buffer.push('gruntFilePath: ' + gruntPath);
 		
-		buffer.push('gruntFilePath:' + gruntPath);
-		buffer.push('taskName:' + task);
-		buffer.push('timeLimit:' + timeout + 'ms');
-
 		logger.info($path.join($path.dirname(gruntPath),'grunt ') + task);
 	}catch(e){
 		res.writeHeader(404,'text/html');
@@ -53,6 +56,12 @@ route(function(req,res){
 		res.end(buffer.join('\n'));
 		logger.info(e.toString());
 	}
+
+	var COLOR = {
+		red : '#d66',
+		green : '#0a0',
+		blue : '#00f'
+	};
 
 	var output = function(str, color){
 		str = str || '';
@@ -65,17 +74,11 @@ route(function(req,res){
 		
 		if(buffer.length){
 			str = buffer.map(function(content){
-				return '<p>' + encodeHTML(content) + '</p>';
+				return '<p style="color:#00f;">' + encodeHTML(content) + '</p>';
 			}).join('') + str;
 			buffer.length = 0;
 		}
 		res.write(str);
-	};
-
-	var COLOR = {
-		red : '#d66',
-		green : '#0a0',
-		blue : '#00f'
 	};
 
 	if($fs.existsSync(gruntPath)){
@@ -93,7 +96,11 @@ route(function(req,res){
 
 		output('--------------------');
 
-		var gruntCmd = $child_process.spawn('grunt', [task], {
+		var gruntCmdArgs = [];
+		if(task){
+			gruntCmdArgs.push(task);
+		}
+		var gruntCmd = $child_process.spawn('grunt', gruntCmdArgs, {
 			cwd : $path.dirname(gruntPath)
 		});
 
@@ -126,3 +133,4 @@ route(function(req,res){
 	}
 
 });
+
