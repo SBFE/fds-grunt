@@ -1,0 +1,22 @@
+{
+  "name": "fds-grunt",
+  "version": "0.0.1",
+  "description": "Run grunt in fd-server",
+  "main": "fds-grunt.node",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/SBFE/fds-grunt.git"
+  },
+  "keywords": [
+    "fd-server"
+  ],
+  "author": "Tony Liang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SBFE/fds-grunt/issues"
+  },
+  "homepage": "https://github.com/SBFE/fds-grunt"
+}
