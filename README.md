@@ -44,13 +44,22 @@ http://test.myproject.com/tools/node_modules/fds-grunt.node
 
 http://test.myproject.com/tools/node_modules/fds-grunt.node?task=deploy
 
+## 参数说明
 
+#### task
+Default: `''`
 
+任务名称，为空时执行 grunt 的默认任务。
 
+#### grunt
+Default: `'../../'`
 
+文件 fds-grunt.node 相对于 gruntfile.js 的路径。
 
+#### timeout
+Default: `10000`
 
-
+设置任务超时时间。
 
 
 
